@@ -1,0 +1,8 @@
+{
+  "name": "The Living Canvas: Indian Heritage & Cultural Traditions",
+  "description": "An interactive, contemporary digital museum exhibit exploring the rich cultural heritage, history, crafts, festivals, philosophy, and culinary arts of India.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

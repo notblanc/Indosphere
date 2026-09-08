@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Cinzel", "Cormorant Garamond", serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --color-terracotta: #B34728;
+  --color-terracotta-dark: #8F341C;
+  --color-gold: #D4881A;
+  --color-gold-light: #EBB04D;
+  --color-indigo-rich: #1E284A;
+  --color-indigo-deep: #12182E;
+  --color-linen: #FAF7F2;
+  --color-sand: #F3EDE2;
+  --color-charcoal: #19191C;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+  }
+}
+
+/* Custom smooth subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F3EDE2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C4B9A8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B34728;
+}
+
+/* Texture overlay for museum archival tactile feeling */
+.bg-canvas-texture {
+  background-color: #FAF7F2;
+  background-image: radial-gradient(#19191C0a 0.75px, transparent 0.75px), radial-gradient(#19191C0a 0.75px, #FAF7F2 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+.bg-dark-canvas-texture {
+  background-color: #12182E;
+  background-image: radial-gradient(#FAF7F20f 0.75px, transparent 0.75px);
+  background-size: 28px 28px;
+}
+
