@@ -18,7 +18,9 @@ import {
   Compass,
   RotateCcw,
   CheckCircle2,
-  Globe
+  Globe,
+  ExternalLink,
+  X
 } from 'lucide-react';
 
 export const CultureView: React.FC = () => {
@@ -70,6 +72,35 @@ export const CultureView: React.FC = () => {
         setIsVideoPlaying(true);
       });
     }
+  };
+
+  const getYouTubeWatchUrl = (url: string) => {
+    if (!url) return '';
+    if (url.includes('/embed/')) {
+      const id = url.split('/embed/')[1]?.split('?')[0];
+      return `https://www.youtube.com/watch?v=${id}`;
+    }
+    if (url.includes('youtu.be/')) {
+      const id = url.split('youtu.be/')[1]?.split('?')[0];
+      return `https://www.youtube.com/watch?v=${id}`;
+    }
+    return url;
+  };
+
+  const getVideoEmbedSrc = (url: string) => {
+    if (!url) return '';
+    let videoId = '';
+    if (url.includes('/embed/')) {
+      videoId = url.split('/embed/')[1]?.split('?')[0] || '';
+    } else if (url.includes('v=')) {
+      videoId = new URLSearchParams(url.split('?')[1]).get('v') || '';
+    } else if (url.includes('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1]?.split('?')[0] || '';
+    }
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`;
+    }
+    return `${url}${url.includes('?') ? '&' : '?'}autoplay=1`;
   };
 
   const toggleVideoMute = () => {
@@ -335,22 +366,58 @@ export const CultureView: React.FC = () => {
                       {t('danceVideoHeading')}
                     </h4>
                   </div>
-                  <span className="text-[11px] font-mono text-[#B34728] uppercase font-bold tracking-wider">
-                    HD Archive Recital
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <a
+                      href={getYouTubeWatchUrl(selectedDance.videoUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-mono text-[#B34728] hover:text-[#8F341C] hover:underline font-semibold"
+                      title="Open performance in YouTube"
+                    >
+                      <span>Direct Video Link</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                    <span className="text-[11px] font-mono text-[#B34728] uppercase font-bold tracking-wider hidden sm:inline">
+                      HD Archive Recital
+                    </span>
+                  </div>
                 </div>
 
                 {/* Video Player Container */}
                 <div className="relative aspect-video rounded-2xl overflow-hidden bg-[#1A1A1E] border border-[#B34728]/30 shadow-md group">
                   {selectedDance.videoUrl?.includes('embed') || selectedDance.videoUrl?.includes('youtube') ? (
                     isVideoPlaying ? (
-                      <iframe
-                        src={`${selectedDance.videoUrl}${selectedDance.videoUrl.includes('?') ? '&' : '?'}autoplay=1`}
-                        title={selectedDance.videoTitle || selectedDance.name}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                        className="w-full h-full border-0"
-                      />
+                      <div className="relative w-full h-full">
+                        <iframe
+                          src={getVideoEmbedSrc(selectedDance.videoUrl)}
+                          title={selectedDance.videoTitle || selectedDance.name}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allowFullScreen
+                          className="w-full h-full border-0"
+                        />
+                        {/* Overlay Controls */}
+                        <div className="absolute top-2 right-2 flex items-center gap-2 z-20">
+                          <a
+                            href={getYouTubeWatchUrl(selectedDance.videoUrl)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/80 hover:bg-[#B34728] text-white text-[11px] font-mono backdrop-blur-xs transition-colors border border-white/20 shadow-md"
+                            title="Open recital directly on YouTube"
+                          >
+                            <span>Open in YouTube</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                          <button
+                            onClick={() => setIsVideoPlaying(false)}
+                            className="p-1.5 rounded-lg bg-black/80 hover:bg-black text-white text-xs backdrop-blur-xs transition-colors border border-white/20 shadow-md cursor-pointer"
+                            title="Close video / Return to poster"
+                            aria-label="Close video"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
                     ) : (
                       <div className="relative w-full h-full">
                         <img
@@ -361,13 +428,25 @@ export const CultureView: React.FC = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40" />
 
                         {/* Top Label */}
-                        <div className="absolute top-0 inset-x-0 p-4 flex items-center justify-between text-white pointer-events-none">
-                          <div className="text-xs sm:text-sm font-serif font-bold tracking-wide drop-shadow-sm">
+                        <div className="absolute top-0 inset-x-0 p-3 sm:p-4 flex items-center justify-between text-white pointer-events-none z-10">
+                          <div className="text-xs sm:text-sm font-serif font-bold tracking-wide drop-shadow-sm pointer-events-auto">
                             {selectedDance.videoTitle || `${selectedDance.name} Performance Recital`}
                           </div>
-                          <span className="text-[10px] font-mono uppercase bg-[#B34728] px-2 py-0.5 rounded text-white font-bold">
-                            Curatorial Archive
-                          </span>
+                          <div className="flex items-center gap-2 pointer-events-auto">
+                            <a
+                              href={getYouTubeWatchUrl(selectedDance.videoUrl)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-[10px] font-mono bg-black/70 hover:bg-[#B34728] px-2.5 py-1 rounded-md text-white border border-white/20 transition-colors shadow-sm"
+                              title="Open in YouTube (new tab)"
+                            >
+                              <span>Watch on YouTube</span>
+                              <ExternalLink className="w-2.5 h-2.5" />
+                            </a>
+                            <span className="text-[10px] font-mono uppercase bg-[#B34728] px-2 py-0.5 rounded text-white font-bold hidden sm:inline">
+                              Curatorial Archive
+                            </span>
+                          </div>
                         </div>
 
                         {/* Center Play Button Overlay */}

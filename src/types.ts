@@ -46,6 +46,7 @@ export interface ClassicalDance {
   videoUrl: string;
   videoTitle: string;
   performerName: string;
+  videoPoster?: string;
   audioTitle: string;
   ragaTala: string;
   traditionalInstruments: string[];

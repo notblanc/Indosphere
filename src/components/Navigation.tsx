@@ -3,7 +3,7 @@ import { ExhibitRoom, SupportedLanguage } from '../types';
 import { EXHIBIT_ROOMS } from '../data/museumData';
 import { AmbientAudio } from './AmbientAudio';
 import { useLanguage } from '../context/LanguageContext';
-import { Sparkles, Menu, X, Globe } from 'lucide-react';
+import { Sparkles, Menu, X, Globe, Bot } from 'lucide-react';
 
 interface NavigationProps {
   currentRoom: ExhibitRoom;
@@ -113,6 +113,20 @@ export const Navigation: React.FC<NavigationProps> = ({ currentRoom, onSelectRoo
 
           <AmbientAudio />
 
+          {/* AI Chatbot Icon Link */}
+          <a
+            id="nav-ai-chatbot-link"
+            href="https://the-entrance.ai.studio/"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Chat with AI Docent"
+            aria-label="AI Chatbot"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#B34728] hover:bg-[#8F341C] text-[#FAF7F2] border border-[#D4881A]/40 text-xs font-medium transition-all shadow-xs group cursor-pointer"
+          >
+            <Bot className="w-4 h-4 text-[#FAF7F2] group-hover:rotate-12 transition-transform" />
+            <span className="hidden sm:inline font-sans text-xs">AI Chat</span>
+          </a>
+
           {/* Mobile hamburger */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -180,6 +194,23 @@ export const Navigation: React.FC<NavigationProps> = ({ currentRoom, onSelectRoo
                 </button>
               );
             })}
+          </div>
+
+          {/* Mobile AI Chatbot Link */}
+          <div className="pt-2 border-t border-[#B34728]/15">
+            <a
+              id="mobile-nav-ai-chatbot-link"
+              href="https://the-entrance.ai.studio/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-[#B34728] hover:bg-[#8F341C] text-[#FAF7F2] text-xs font-medium shadow-xs transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <Bot className="w-4 h-4" />
+                <span className="font-semibold">AI Chatbot</span>
+              </div>
+              <span className="text-[10px] font-mono opacity-85">the-entrance.ai.studio ↗</span>
+            </a>
           </div>
         </div>
       )}
