@@ -158,6 +158,22 @@ function MuseumAppContent() {
                     {getRoomTitle(room.id)}
                   </button>
                 ))}
+                <a
+                  href="https://journeyman.ai.studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-left py-1 text-[#B34728] hover:text-[#8F341C] font-semibold transition-colors flex items-center gap-1"
+                >
+                  <span>Journeyman ↗</span>
+                </a>
+                <a
+                  href="https://foodlens-ai.ai.studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-left py-1 text-[#702632] hover:text-[#B34728] font-semibold transition-colors flex items-center gap-1"
+                >
+                  <span>FoodLens ↗</span>
+                </a>
               </div>
             </div>
 

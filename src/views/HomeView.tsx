@@ -4,7 +4,7 @@ import { InteractiveIndiaMap } from '../components/InteractiveIndiaMap';
 import { MagneticElement } from '../components/MagneticElement';
 import { ExhibitRoom, Artifact } from '../types';
 import { HISTORICAL_ERAS, FESTIVALS, CRAFT_TRADITIONS } from '../data/museumData';
-import { ArrowRight, Sparkles, Compass, Eye, Shield, Feather, BookOpen } from 'lucide-react';
+import { ArrowRight, Sparkles, Compass, Eye, Shield, Feather, BookOpen, ExternalLink, UtensilsCrossed } from 'lucide-react';
 
 interface HomeViewProps {
   onNavigateRoom: (room: ExhibitRoom) => void;
@@ -258,7 +258,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigateRoom, onInspectArt
 
           <div
             onClick={() => onNavigateRoom('food')}
-            className="group cursor-pointer p-6 rounded-2xl bg-[#FAF7F2] border border-[#B34728]/20 hover:border-[#B34728] transition-all hover:shadow-lg space-y-4 sm:col-span-2 lg:col-span-2"
+            className="group cursor-pointer p-6 rounded-2xl bg-[#FAF7F2] border border-[#B34728]/20 hover:border-[#B34728] transition-all hover:shadow-lg space-y-4"
           >
             <div className="w-10 h-10 rounded-xl bg-[#702632]/10 text-[#702632] flex items-center justify-center group-hover:bg-[#702632] group-hover:text-white transition-colors">
               <Compass className="w-5 h-5" />
@@ -276,6 +276,86 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigateRoom, onInspectArt
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
+
+          {/* Journeyman New Feature Tile */}
+          <a
+            id="feature-tile-journeyman"
+            href="https://journeyman.ai.studio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group cursor-pointer p-6 rounded-2xl bg-[#FAF7F2] border-2 border-[#D4881A]/40 hover:border-[#B34728] transition-all hover:shadow-xl space-y-4 relative flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-10 h-10 rounded-xl bg-[#D4881A]/15 text-[#B34728] flex items-center justify-center group-hover:bg-[#B34728] group-hover:text-white transition-colors">
+                  <Compass className="w-5 h-5" />
+                </div>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#D4881A]/15 text-[#B34728] font-mono text-[10px] font-bold uppercase tracking-wider border border-[#D4881A]/30">
+                  <Sparkles className="w-3 h-3 text-[#D4881A]" />
+                  New Feature
+                </span>
+              </div>
+
+              <div className="space-y-1.5">
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#1A1A1E] group-hover:text-[#B34728] transition-colors">
+                  Journeyman
+                </h3>
+                <p className="text-xs text-[#1A1A1E]/75 leading-relaxed font-sans">
+                  Embark on generative cultural expeditions, AI-guided historical tours, and living heritage explorations.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-xs font-semibold text-[#B34728] pt-3 border-t border-[#B34728]/10">
+              <span className="font-mono text-[11px] text-[#1A1A1E]/60 group-hover:text-[#B34728] transition-colors">
+                journeyman.ai.studio
+              </span>
+              <div className="flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                <span>Launch Journeyman</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </div>
+            </div>
+          </a>
+
+          {/* FoodLens New Feature Tile */}
+          <a
+            id="feature-tile-foodlens"
+            href="https://foodlens-ai.ai.studio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group cursor-pointer p-6 rounded-2xl bg-[#FAF7F2] border-2 border-[#702632]/35 hover:border-[#B34728] transition-all hover:shadow-xl space-y-4 relative flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-10 h-10 rounded-xl bg-[#702632]/10 text-[#702632] flex items-center justify-center group-hover:bg-[#702632] group-hover:text-white transition-colors">
+                  <UtensilsCrossed className="w-5 h-5" />
+                </div>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#702632]/10 text-[#702632] font-mono text-[10px] font-bold uppercase tracking-wider border border-[#702632]/25">
+                  <Sparkles className="w-3 h-3 text-[#702632]" />
+                  New Feature
+                </span>
+              </div>
+
+              <div className="space-y-1.5">
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#1A1A1E] group-hover:text-[#702632] transition-colors">
+                  FoodLens
+                </h3>
+                <p className="text-xs text-[#1A1A1E]/75 leading-relaxed font-sans">
+                  AI-powered visual culinary analysis, exploring dishes, spice blends, ingredients, and Ayurvedic nutritional geometry.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-xs font-semibold text-[#702632] pt-3 border-t border-[#702632]/10">
+              <span className="font-mono text-[11px] text-[#1A1A1E]/60 group-hover:text-[#702632] transition-colors">
+                foodlens-ai.ai.studio
+              </span>
+              <div className="flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                <span>Launch FoodLens</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </div>
+            </div>
+          </a>
         </div>
       </section>
     </div>
