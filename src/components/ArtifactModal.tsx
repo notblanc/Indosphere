@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Artifact } from '../types';
+import { useLanguage } from '../context/LanguageContext';
+import { getLocalizedArtifact } from '../data/translationsData';
 import { X, Sparkles, MapPin, Calendar, Tag, ShieldCheck } from 'lucide-react';
 
 interface ArtifactModalProps {
@@ -8,8 +10,11 @@ interface ArtifactModalProps {
   onClose: () => void;
 }
 
-export const ArtifactModal: React.FC<ArtifactModalProps> = ({ artifact, onClose }) => {
-  if (!artifact) return null;
+export const ArtifactModal: React.FC<ArtifactModalProps> = ({ artifact: rawArtifact, onClose }) => {
+  const { language, t } = useLanguage();
+  if (!rawArtifact) return null;
+
+  const artifact = getLocalizedArtifact(rawArtifact, language);
 
   return (
     <AnimatePresence>
@@ -27,7 +32,7 @@ export const ArtifactModal: React.FC<ArtifactModalProps> = ({ artifact, onClose 
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-20 p-2 rounded-full bg-[#FAF7F2]/90 hover:bg-[#B34728] text-[#1A1A1E] hover:text-white transition-colors border border-[#B34728]/20 shadow-md"
+            className="absolute top-4 right-4 z-20 p-2 rounded-full bg-[#FAF7F2]/90 hover:bg-[#B34728] text-[#1A1A1E] hover:text-white transition-colors border border-[#B34728]/20 shadow-md cursor-pointer"
             aria-label="Close artifact viewer"
           >
             <X className="w-5 h-5" />
@@ -44,7 +49,7 @@ export const ArtifactModal: React.FC<ArtifactModalProps> = ({ artifact, onClose 
               />
               <div className="absolute bottom-4 left-4 right-4 text-center">
                 <span className="text-[11px] font-mono tracking-widest text-white/60 bg-black/50 px-2.5 py-1 rounded-full backdrop-blur-sm">
-                  Exhibit ID: {artifact.id.toUpperCase()} • Archive Collection
+                  Exhibit ID: {artifact.id.toUpperCase()} • {t('archiveCollection', 'Archive Collection')}
                 </span>
               </div>
             </div>
@@ -76,14 +81,14 @@ export const ArtifactModal: React.FC<ArtifactModalProps> = ({ artifact, onClose 
                   <div className="flex items-start gap-2">
                     <MapPin className="w-3.5 h-3.5 text-[#B34728] shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-[#1A1A1E]">Origin:</span>{' '}
+                      <span className="font-semibold text-[#1A1A1E]">{t('artifactOriginLabel', 'Origin')}:</span>{' '}
                       <span className="text-[#1A1A1E]/80">{artifact.origin}</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">
                     <ShieldCheck className="w-3.5 h-3.5 text-[#D4881A] shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-[#1A1A1E]">Medium / Material:</span>{' '}
+                      <span className="font-semibold text-[#1A1A1E]">{t('artifactMediumLabel', 'Medium / Material')}:</span>{' '}
                       <span className="text-[#1A1A1E]/80">{artifact.medium}</span>
                     </div>
                   </div>
@@ -96,7 +101,7 @@ export const ArtifactModal: React.FC<ArtifactModalProps> = ({ artifact, onClose 
                 {/* Curatorial Note */}
                 <div className="border-l-2 border-[#B34728] pl-3 py-1 bg-[#B34728]/5 rounded-r-lg mb-4">
                   <span className="text-[11px] font-mono uppercase tracking-widest text-[#B34728] font-semibold block mb-0.5">
-                    Curator’s Reflection
+                    {t('curatorReflection', 'Curator’s Reflection')}
                   </span>
                   <p className="text-xs text-[#1A1A1E]/80 italic">
                     {artifact.curatorNote}

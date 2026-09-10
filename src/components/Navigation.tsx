@@ -17,7 +17,9 @@ import {
   Hammer,
   Flame,
   Check,
-  UtensilsCrossed
+  UtensilsCrossed,
+  ScanSearch,
+  Map
 } from 'lucide-react';
 
 interface NavigationProps {
@@ -188,12 +190,12 @@ export const Navigation: React.FC<NavigationProps> = ({ currentRoom, onSelectRoo
             {isDropdownOpen && (
               <div
                 id="top-nav-dropdown-menu"
-                className="absolute right-0 mt-2.5 w-80 sm:w-96 rounded-2xl bg-[#FAF7F2] border border-[#B34728]/25 shadow-2xl p-3 z-50 transition-all origin-top-right"
+                className="absolute right-0 mt-2.5 w-80 sm:w-96 max-h-[min(480px,calc(100vh-5.5rem))] overflow-y-auto overscroll-contain rounded-2xl bg-[#FAF7F2] border border-[#B34728]/25 shadow-2xl p-3 z-50 transition-all origin-top-right [scrollbar-width:thin] [scrollbar-color:#C4B9A8_#F3EDE2]"
               >
-                {/* Halls Header */}
-                <div className="flex items-center justify-between px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest text-[#B34728] font-bold border-b border-[#B34728]/15 mb-2">
+                {/* Halls Header (Sticky while scrolling) */}
+                <div className="sticky -top-3 -mx-3 px-4 py-2 bg-[#FAF7F2]/95 backdrop-blur-xs text-[10px] font-mono uppercase tracking-widest text-[#B34728] font-bold border-b border-[#B34728]/15 mb-2 flex items-center justify-between z-10 shadow-xs">
                   <span>{t('exhibitHalls')}</span>
-                  <span className="text-[10px] text-[#1A1A1E]/50 font-normal">6 Halls</span>
+                  <span className="text-[10px] text-[#1A1A1E]/50 font-normal">6 Halls • Scroll for more</span>
                 </div>
 
                 {/* All Navigation Room Buttons */}
@@ -235,11 +237,77 @@ export const Navigation: React.FC<NavigationProps> = ({ currentRoom, onSelectRoo
                   })}
                 </div>
 
-                {/* Featured Expeditions Section */}
+                {/* Features & Expeditions Section */}
                 <div className="px-3 pt-3 pb-1.5 text-[10px] font-mono uppercase tracking-widest text-[#B34728] font-bold border-t border-[#B34728]/15 mt-2.5 flex items-center justify-between">
-                  <span>Featured Expeditions</span>
-                  <span className="text-[10px] text-[#D4881A] font-semibold">External</span>
+                  <span>Features & Expeditions</span>
+                  <span className="text-[10px] text-[#D4881A] font-semibold">AI Tools</span>
                 </div>
+
+                {/* Bharat Darshan Feature Link Tile */}
+                <a
+                  id="dropdown-nav-bharat-darshan"
+                  href="https://bharat-darshan-ai.ai.studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsDropdownOpen(false)}
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-[#F3EDE2]/90 hover:bg-[#EBE2D4] border border-[#B34728]/35 transition-all group cursor-pointer mt-1 shadow-xs"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-[#B34728]/15 text-[#B34728] flex items-center justify-center shrink-0 group-hover:bg-[#B34728] group-hover:text-white transition-colors">
+                      <Map className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-serif font-bold text-sm text-[#1A1A1E] group-hover:text-[#B34728] transition-colors">
+                          Bharat Darshan
+                        </span>
+                        <span className="text-[9px] font-mono uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-[#B34728]/15 text-[#B34728] border border-[#B34728]/25">
+                          New Feature
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#1A1A1E]/70 block font-sans">
+                        AI Virtual Tour & Sacred Cultural Panoramas
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 text-xs font-mono text-[#B34728] group-hover:translate-x-0.5 transition-transform">
+                    <span className="text-[10px] hidden sm:inline opacity-75">bharat-darshan-ai</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </div>
+                </a>
+
+                {/* Artifact Lens Feature Link Tile */}
+                <a
+                  id="dropdown-nav-artifact-lens"
+                  href="https://artirecog.ai.studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsDropdownOpen(false)}
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-[#F3EDE2]/90 hover:bg-[#EBE2D4] border border-[#1E284A]/30 transition-all group cursor-pointer mt-1.5 shadow-xs"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-[#1E284A]/15 text-[#1E284A] flex items-center justify-center shrink-0 group-hover:bg-[#1E284A] group-hover:text-white transition-colors">
+                      <ScanSearch className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-serif font-bold text-sm text-[#1A1A1E] group-hover:text-[#1E284A] transition-colors">
+                          Artifact Lens
+                        </span>
+                        <span className="text-[9px] font-mono uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-[#1E284A]/15 text-[#1E284A] border border-[#1E284A]/25">
+                          New Feature
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#1A1A1E]/70 block font-sans">
+                        AI Relic Recognition & Archaeological Vision
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 text-xs font-mono text-[#1E284A] group-hover:translate-x-0.5 transition-transform">
+                    <span className="text-[10px] hidden sm:inline opacity-75">artirecog</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </div>
+                </a>
 
                 {/* Journeyman Feature Link Tile */}
                 <a
@@ -248,7 +316,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentRoom, onSelectRoo
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsDropdownOpen(false)}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-[#F3EDE2]/90 hover:bg-[#EBE2D4] border border-[#D4881A]/40 transition-all group cursor-pointer mt-1 shadow-xs"
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-[#F3EDE2]/90 hover:bg-[#EBE2D4] border border-[#D4881A]/40 transition-all group cursor-pointer mt-1.5 shadow-xs"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-[#D4881A]/20 text-[#B34728] flex items-center justify-center shrink-0 group-hover:bg-[#B34728] group-hover:text-white transition-colors">
@@ -348,7 +416,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentRoom, onSelectRoo
 
       {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#B34728]/15 bg-[#FAF7F2] px-4 pt-3 pb-5 space-y-3 shadow-xl">
+        <div className="lg:hidden border-t border-[#B34728]/15 bg-[#FAF7F2] px-4 pt-3 pb-5 space-y-3 shadow-xl max-h-[85vh] overflow-y-auto overscroll-contain [scrollbar-width:thin] [scrollbar-color:#C4B9A8_#F3EDE2]">
           {/* Mobile Language Switcher */}
           <div className="flex items-center justify-between px-3 py-2 bg-[#F3EDE2]/70 rounded-lg border border-[#B34728]/15">
             <span className="text-xs font-mono uppercase text-[#B34728] font-bold flex items-center gap-1.5">
@@ -407,8 +475,48 @@ export const Navigation: React.FC<NavigationProps> = ({ currentRoom, onSelectRoo
             })}
           </div>
 
-          {/* Journeyman New Feature Link in Mobile Menu */}
+          {/* Feature Links in Mobile Menu */}
           <div className="pt-2 border-t border-[#B34728]/15 space-y-2">
+            <a
+              id="mobile-nav-bharat-darshan-link"
+              href="https://bharat-darshan-ai.ai.studio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-[#F3EDE2] hover:bg-[#EBE2D4] border border-[#B34728]/35 text-[#1A1A1E] text-xs font-medium shadow-xs transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <Map className="w-4 h-4 text-[#B34728]" />
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold text-sm font-serif">Bharat Darshan</span>
+                    <span className="text-[9px] font-mono uppercase bg-[#B34728]/15 text-[#B34728] px-1 rounded font-bold">New</span>
+                  </div>
+                  <span className="text-[10px] text-[#1A1A1E]/70">AI Virtual Tour & Cultural Panorama</span>
+                </div>
+              </div>
+              <span className="text-[10px] font-mono text-[#B34728]">bharat-darshan-ai ↗</span>
+            </a>
+
+            <a
+              id="mobile-nav-artifact-lens-link"
+              href="https://artirecog.ai.studio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-[#F3EDE2] hover:bg-[#EBE2D4] border border-[#1E284A]/30 text-[#1A1A1E] text-xs font-medium shadow-xs transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <ScanSearch className="w-4 h-4 text-[#1E284A]" />
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold text-sm font-serif">Artifact Lens</span>
+                    <span className="text-[9px] font-mono uppercase bg-[#1E284A]/15 text-[#1E284A] px-1 rounded font-bold">New</span>
+                  </div>
+                  <span className="text-[10px] text-[#1A1A1E]/70">AI Relic Recognition & Vision</span>
+                </div>
+              </div>
+              <span className="text-[10px] font-mono text-[#1E284A]">artirecog ↗</span>
+            </a>
+
             <a
               id="mobile-nav-journeyman-link"
               href="https://journeyman.ai.studio"

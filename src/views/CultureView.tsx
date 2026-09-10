@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CLASSICAL_DANCES, INDIAN_LANGUAGES, PHILOSOPHICAL_SCHOOLS } from '../data/museumData';
 import { ClassicalDance, IndianLanguage, PhilosophicalSchool } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { getLocalizedPhilosophy } from '../data/translationsData';
 import {
   Sparkles,
   Play,
@@ -923,12 +924,13 @@ export const CultureView: React.FC = () => {
           className="space-y-10"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PHILOSOPHICAL_SCHOOLS.map((school) => {
+            {PHILOSOPHICAL_SCHOOLS.map((rawSchool) => {
+              const school = getLocalizedPhilosophy(rawSchool, language);
               const isSelected = selectedPhilosophy.id === school.id;
               return (
                 <div
                   key={school.id}
-                  onClick={() => setSelectedPhilosophy(school)}
+                  onClick={() => setSelectedPhilosophy(rawSchool)}
                   className={`p-6 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
                     isSelected
                       ? 'bg-[#FAF7F2] border-[#1E284A] shadow-md ring-2 ring-[#1E284A]/30'
@@ -968,42 +970,47 @@ export const CultureView: React.FC = () => {
           </div>
 
           {/* Active Philosophy Deep Inquiry */}
-          <div className="bg-[#FAF7F2] border border-[#B34728]/20 rounded-3xl p-8 sm:p-10 shadow-sm space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#B34728]/15">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-[#1E284A] font-bold">
-                  Astika Darshana Hermeneutics
-                </span>
-                <h3 className="font-serif text-3xl font-bold text-[#1A1A1E] mt-1">
-                  {selectedPhilosophy.name} ({selectedPhilosophy.sanskritName})
-                </h3>
-              </div>
-              <div className="text-right">
-                <span className="text-xs font-mono text-[#1A1A1E]/60 block">Codified by</span>
-                <span className="font-serif font-bold text-base text-[#1A1A1E]">{selectedPhilosophy.founder}</span>
-              </div>
-            </div>
+          {(() => {
+            const activePhil = getLocalizedPhilosophy(selectedPhilosophy, language);
+            return (
+              <div className="bg-[#FAF7F2] border border-[#B34728]/20 rounded-3xl p-8 sm:p-10 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#B34728]/15">
+                  <div>
+                    <span className="text-xs font-mono uppercase tracking-widest text-[#1E284A] font-bold">
+                      Astika Darshana Hermeneutics
+                    </span>
+                    <h3 className="font-serif text-3xl font-bold text-[#1A1A1E] mt-1">
+                      {activePhil.name} ({activePhil.sanskritName})
+                    </h3>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-mono text-[#1A1A1E]/60 block">Codified by</span>
+                    <span className="font-serif font-bold text-base text-[#1A1A1E]">{activePhil.founder}</span>
+                  </div>
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-              <div className="p-5 rounded-2xl bg-[#F3EDE2] border border-[#B34728]/15 space-y-2">
-                <span className="text-xs font-mono uppercase text-[#B34728] font-bold block">
-                  Core Philosophical Inquiry
-                </span>
-                <p className="text-[#1A1A1E]/85 leading-relaxed">
-                  {selectedPhilosophy.coreInquiry}
-                </p>
-              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                  <div className="p-5 rounded-2xl bg-[#F3EDE2] border border-[#B34728]/15 space-y-2">
+                    <span className="text-xs font-mono uppercase text-[#B34728] font-bold block">
+                      Core Philosophical Inquiry
+                    </span>
+                    <p className="text-[#1A1A1E]/85 leading-relaxed">
+                      {activePhil.coreInquiry}
+                    </p>
+                  </div>
 
-              <div className="p-5 rounded-2xl bg-[#F3EDE2] border border-[#B34728]/15 space-y-2">
-                <span className="text-xs font-mono uppercase text-[#1E284A] font-bold block">
-                  Epistemological Method (Pramana)
-                </span>
-                <p className="text-[#1A1A1E]/85 leading-relaxed italic">
-                  "{selectedPhilosophy.epistemology}"
-                </p>
+                  <div className="p-5 rounded-2xl bg-[#F3EDE2] border border-[#B34728]/15 space-y-2">
+                    <span className="text-xs font-mono uppercase text-[#1E284A] font-bold block">
+                      Epistemological Method (Pramana)
+                    </span>
+                    <p className="text-[#1A1A1E]/85 leading-relaxed italic">
+                      "{activePhil.epistemology}"
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            );
+          })()}
         </motion.div>
       )}
     </div>

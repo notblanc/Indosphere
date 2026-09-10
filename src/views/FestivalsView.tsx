@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { FESTIVALS } from '../data/museumData';
 import { Festival } from '../types';
 import { ParticleTriggerOptions } from '../components/ParticleCanvas';
+import { useLanguage } from '../context/LanguageContext';
+import { getLocalizedFestival } from '../data/translationsData';
 import { Sparkles, Flame, Calendar, Sun, Heart, Utensils, Info } from 'lucide-react';
 
 interface FestivalsViewProps {
@@ -10,11 +12,15 @@ interface FestivalsViewProps {
 }
 
 export const FestivalsView: React.FC<FestivalsViewProps> = ({ onTriggerParticles }) => {
-  const [selectedFestival, setSelectedFestival] = useState<Festival>(FESTIVALS[0]);
+  const { language, t } = useLanguage();
+  const [selectedFestivalId, setSelectedFestivalId] = useState<string>(FESTIVALS[0].id);
+
+  const rawSelectedFestival = FESTIVALS.find(f => f.id === selectedFestivalId) || FESTIVALS[0];
+  const selectedFestival = getLocalizedFestival(rawSelectedFestival, language);
 
   const handleFestivalSelect = (fest: Festival, e: React.MouseEvent) => {
-    setSelectedFestival(fest);
-    // Trigger physics-based localized micro-animation (user spec requirement)
+    setSelectedFestivalId(fest.id);
+    // Trigger physics-based localized micro-animation
     onTriggerParticles({
       x: e.clientX,
       y: e.clientY,
@@ -71,26 +77,26 @@ export const FestivalsView: React.FC<FestivalsViewProps> = ({ onTriggerParticles
             className="text-xs font-mono uppercase tracking-widest font-bold block"
             style={{ color: isDiwali ? '#F4C464' : '#B34728' }}
           >
-            Cosmic Cycles & Collective Rites
+            {t('festivalsEyebrow', 'Cosmic Cycles & Collective Rites')}
           </span>
           <h1
             className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight transition-colors duration-500"
             style={{ color: isDiwali ? '#FFFFFF' : '#1A1A1E' }}
           >
-            Seasonal Epics
+            {t('festivalsTitle', 'Seasonal Epics')}
           </h1>
           <p
             className="text-base leading-relaxed transition-colors duration-500 font-sans"
-            style={{ color: isDiwali ? 'rgba(255,255,255,0.8)' : '#1A1A1E/80' }}
+            style={{ color: isDiwali ? 'rgba(255,255,255,0.8)' : 'rgba(26,26,30,0.8)' }}
           >
-            A dynamic calendar where ambient illumination and atmospheric colors morph with each festival.
-            Click any festival card below to trigger a physical burst of marigold petals, gulal powders, or diya sparks.
+            {t('festivalsSubtitle', 'A dynamic calendar where ambient illumination and atmospheric colors morph with each festival. Click any festival card below to trigger a physical burst of marigold petals, gulal powders, or diya sparks.')}
           </p>
         </div>
 
         {/* Festival Calendar Cards Bar */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {FESTIVALS.map((fest) => {
+          {FESTIVALS.map((rawFest) => {
+            const fest = getLocalizedFestival(rawFest, language);
             const isSelected = selectedFestival.id === fest.id;
             return (
               <motion.button
@@ -151,7 +157,7 @@ export const FestivalsView: React.FC<FestivalsViewProps> = ({ onTriggerParticles
                     style={{ color: fest.accentColor }}
                   >
                     <Sparkles className="w-3 h-3" />
-                    Click for Physics Burst
+                    {language === 'hi' ? 'कण वर्षा के लिए क्लिक करें' : language === 'es' ? 'Clic para ráfaga' : 'Click for Physics Burst'}
                   </span>
                   <div
                     className="w-2 h-2 rounded-full"
@@ -222,11 +228,11 @@ export const FestivalsView: React.FC<FestivalsViewProps> = ({ onTriggerParticles
                     className="text-xs font-mono uppercase tracking-widest font-bold block mb-1"
                     style={{ color: selectedFestival.accentColor }}
                   >
-                    Civilizational Lore & Narrative
+                    {t('sacredLoreHeading', 'Civilizational Lore & Narrative')}
                   </span>
                   <p
                     className="text-sm sm:text-base leading-relaxed"
-                    style={{ color: isDiwali ? 'rgba(255,255,255,0.85)' : '#1A1A1E/85' }}
+                    style={{ color: isDiwali ? 'rgba(255,255,255,0.85)' : 'rgba(26,26,30,0.85)' }}
                   >
                     {selectedFestival.lore}
                   </p>
@@ -238,7 +244,7 @@ export const FestivalsView: React.FC<FestivalsViewProps> = ({ onTriggerParticles
                     className="text-xs font-mono uppercase tracking-widest font-bold mb-3"
                     style={{ color: selectedFestival.accentColor }}
                   >
-                    Ritual Practices & Community Observances
+                    {t('traditionsHeading', 'Ritual Practices & Community Observances')}
                   </h4>
                   <div className="space-y-2.5">
                     {selectedFestival.traditions.map((trad, idx) => (
@@ -254,7 +260,7 @@ export const FestivalsView: React.FC<FestivalsViewProps> = ({ onTriggerParticles
                           className="w-4 h-4 shrink-0 mt-0.5"
                           style={{ color: selectedFestival.accentColor }}
                         />
-                        <span style={{ color: isDiwali ? 'rgba(255,255,255,0.9)' : '#1A1A1E/90' }}>
+                        <span style={{ color: isDiwali ? 'rgba(255,255,255,0.9)' : 'rgba(26,26,30,0.9)' }}>
                           {trad}
                         </span>
                       </div>
@@ -285,13 +291,13 @@ export const FestivalsView: React.FC<FestivalsViewProps> = ({ onTriggerParticles
                       className="text-xs font-mono uppercase tracking-widest font-bold block"
                       style={{ color: selectedFestival.accentColor }}
                     >
-                      Atmospheric Physics Micro-State
+                      {language === 'hi' ? 'वातावरण भौतिकी सूक्ष्मावस्था' : language === 'es' ? 'Micro-Estado de Física Atmosférica' : 'Atmospheric Physics Micro-State'}
                     </span>
                     <h4 className="font-serif text-xl font-bold mt-1">
-                      {isDiwali && 'Midnight Illumination • Earthen Diya Sparks'}
-                      {isHoli && 'Spring Equinox • Vibrant Gulal Clouds'}
-                      {isOnam && 'Floral Pookkalam • Falling Marigold Petals'}
-                      {isDurga && 'Dhunuchi Nritya • Camphor & Silt Incense'}
+                      {isDiwali && (language === 'hi' ? 'मध्यरात्रि प्रकाश • मिट्टी के दीपकों की जगमगाहट' : language === 'es' ? 'Iluminación de Medianoche • Chispas de Diya' : 'Midnight Illumination • Earthen Diya Sparks')}
+                      {isHoli && (language === 'hi' ? 'वसंत विषुव • जीवंत गुलाल के बादल' : language === 'es' ? 'Equinoccio de Primavera • Nubes de Gulal' : 'Spring Equinox • Vibrant Gulal Clouds')}
+                      {isOnam && (language === 'hi' ? 'पुष्प पूक्कलम • गेंदे के फूलों की पंखुड़ियां' : language === 'es' ? 'Pookkalam Floral • Pétalos de Cempasúchil' : 'Floral Pookkalam • Falling Marigold Petals')}
+                      {isDurga && (language === 'hi' ? 'धूनुची नृत्य • कपूर और लोबान की सुगंध' : language === 'es' ? 'Dhunuchi Nritya • Incienso de Alcanfor' : 'Dhunuchi Nritya • Camphor & Silt Incense')}
                     </h4>
                   </div>
 
@@ -310,7 +316,11 @@ export const FestivalsView: React.FC<FestivalsViewProps> = ({ onTriggerParticles
                       color: isDiwali ? '#1A1A1E' : '#FFFFFF'
                     }}
                   >
-                    Trigger {selectedFestival.particleType.toUpperCase()} Burst Again
+                    {language === 'hi'
+                      ? `पुनः ${selectedFestival.particleType.toUpperCase()} कण वर्षा करें`
+                      : language === 'es'
+                      ? `Activar ráfaga de ${selectedFestival.particleType.toUpperCase()}`
+                      : `Trigger ${selectedFestival.particleType.toUpperCase()} Burst Again`}
                   </button>
                 </div>
 
@@ -328,7 +338,7 @@ export const FestivalsView: React.FC<FestivalsViewProps> = ({ onTriggerParticles
                       style={{ color: selectedFestival.accentColor }}
                     />
                     <h4 className="font-serif text-lg font-bold">
-                      Sacred Festive Offerings (Bhog / Prasad)
+                      {t('culinaryHighlightsHeading', 'Sacred Festive Offerings (Bhog / Prasad)')}
                     </h4>
                   </div>
 

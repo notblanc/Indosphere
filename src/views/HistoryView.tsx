@@ -3,6 +3,8 @@ import { motion } from 'motion/react';
 import { HISTORICAL_ERAS } from '../data/museumData';
 import { Artifact, HistoricalEra } from '../types';
 import { MagneticElement } from '../components/MagneticElement';
+import { useLanguage } from '../context/LanguageContext';
+import { getLocalizedEra, getLocalizedArtifact } from '../data/translationsData';
 import { Sparkles, ArrowRight, Eye, Landmark, CheckCircle2, ChevronDown } from 'lucide-react';
 
 interface HistoryViewProps {
@@ -10,6 +12,7 @@ interface HistoryViewProps {
 }
 
 export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) => {
+  const { language, t } = useLanguage();
   const [selectedEra, setSelectedEra] = useState<string>(HISTORICAL_ERAS[0].id);
 
   return (
@@ -17,20 +20,22 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
       {/* Header */}
       <div className="max-w-3xl space-y-4">
         <span className="text-xs font-mono uppercase tracking-widest text-[#B34728] font-bold block">
-          Chronological Tapestry • 3300 BCE – Present
+          {t('historyEyebrow', 'Chronological Tapestry • 3300 BCE – Present')}
         </span>
         <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#1A1A1E]">
-          Temporal Odyssey
+          {t('historyTitle', 'Temporal Odyssey')}
         </h1>
         <p className="text-base text-[#1A1A1E]/80 leading-relaxed font-sans">
-          Tracing five millennia of philosophical evolution, urban civil planning, epigraphical records,
-          and monumental architecture across the subcontinent. Hover over each epoch to feel its magnetic resonance.
+          {t('historySubtitle', 'Tracing five millennia of philosophical evolution, urban civil planning, epigraphical records, and monumental architecture across the subcontinent. Hover over each epoch to feel its magnetic resonance.')}
         </p>
       </div>
 
       {/* Vertical Parallax Timeline Container */}
       <div className="relative border-l-2 border-[#B34728]/25 pl-6 sm:pl-10 ml-2 sm:ml-6 space-y-24">
-        {HISTORICAL_ERAS.map((era, index) => {
+        {HISTORICAL_ERAS.map((rawEra, index) => {
+          const era = getLocalizedEra(rawEra, language);
+          const eraArtifacts = era.artifacts.map(a => getLocalizedArtifact(a, language));
+
           return (
             <div
               key={era.id}
@@ -51,7 +56,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
               <div className="bg-[#FAF7F2] border border-[#B34728]/20 rounded-3xl overflow-hidden shadow-sm transition-all duration-500 hover:shadow-2xl">
                 {/* Visual Backdrop Header */}
                 <div className="relative h-64 sm:h-80 overflow-hidden bg-[#1A1A1E]">
-                  {/* Expanding background image on hover (user spec requirement) */}
+                  {/* Expanding background image on hover */}
                   <motion.div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
                     style={{
@@ -63,7 +68,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
 
                   <div className="absolute top-6 left-6 right-6 flex items-center justify-between text-white">
                     <span className="font-mono text-xs uppercase tracking-widest px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
-                      Epoch 0{index + 1}
+                      {t('epoch', 'Epoch')} 0{index + 1}
                     </span>
                     <span className="font-mono text-xs text-[#E5A93C] font-semibold bg-black/40 px-2.5 py-1 rounded backdrop-blur-sm">
                       {era.period}
@@ -71,7 +76,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
                   </div>
 
                   <div className="absolute bottom-6 left-6 right-6 text-white max-w-2xl">
-                    {/* Magnetic Pull Effect on Era Title (user spec requirement) */}
+                    {/* Magnetic Pull Effect on Era Title */}
                     <MagneticElement intensity={0.3}>
                       <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white drop-shadow-md">
                         {era.name}
@@ -90,7 +95,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
                     <div className="lg:col-span-7 space-y-5">
                       <div>
                         <h3 className="text-xs uppercase font-mono tracking-widest text-[#B34728] font-bold mb-2">
-                          Civilizational Overview
+                          {t('civilizationalOverview', 'Civilizational Overview')}
                         </h3>
                         <p className="text-sm sm:text-base text-[#1A1A1E]/85 leading-relaxed font-sans">
                           {era.overview}
@@ -99,7 +104,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
 
                       <div className="border-l-2 border-[#D4881A] pl-4 py-1 bg-[#F3EDE2]/50 rounded-r-lg">
                         <span className="text-xs font-mono uppercase tracking-wider text-[#D4881A] font-bold block mb-1">
-                          Historical Legacy
+                          {t('historicalLegacy', 'Historical Legacy')}
                         </span>
                         <p className="text-xs sm:text-sm text-[#1A1A1E]/80 italic">
                           {era.significance}
@@ -108,7 +113,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
 
                       <div>
                         <span className="text-xs uppercase font-mono tracking-widest text-[#1A1A1E]/60 font-semibold block mb-2">
-                          Architectural Hallmark
+                          {t('architecturalHallmark', 'Architectural Hallmark')}
                         </span>
                         <div className="text-xs sm:text-sm text-[#1A1A1E] font-medium bg-[#F3EDE2] p-3 rounded-xl border border-[#B34728]/15 flex items-start gap-2">
                           <Landmark className="w-4 h-4 text-[#B34728] shrink-0 mt-0.5" />
@@ -122,7 +127,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
                       <div>
                         <h4 className="text-xs font-mono uppercase tracking-widest text-[#B34728] font-bold mb-4 flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-[#D4881A]" />
-                          Epoch Innovations
+                          {t('epochInnovations', 'Epoch Innovations')}
                         </h4>
                         <ul className="space-y-3">
                           {era.keyInnovations.map((innovation, idx) => (
@@ -136,10 +141,10 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
 
                       <div className="pt-6 mt-6 border-t border-[#B34728]/15">
                         <span className="text-[11px] font-mono text-[#1A1A1E]/60 block mb-2">
-                          Masterpieces in Museum Archive ({era.artifacts.length})
+                          {t('masterpiecesInArchive', 'Masterpieces in Museum Archive')} ({eraArtifacts.length})
                         </span>
                         <div className="flex flex-wrap gap-2">
-                          {era.artifacts.map((art) => (
+                          {eraArtifacts.map((art) => (
                             <button
                               key={art.id}
                               onClick={() => onInspectArtifact(art)}
@@ -158,13 +163,15 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onInspectArtifact }) =
                   <div className="pt-6 border-t border-[#B34728]/15">
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-xs font-mono uppercase tracking-widest text-[#1A1A1E]/70 font-semibold">
-                        Key Artifacts & Inscriptions
+                        {t('keyArtifactsTitle', 'Key Artifacts & Inscriptions')}
                       </span>
-                      <span className="text-xs text-[#B34728] font-medium">Click to inspect provenance</span>
+                      <span className="text-xs text-[#B34728] font-medium">
+                        {t('clickToInspect', 'Click to inspect provenance')}
+                      </span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {era.artifacts.map((art) => (
+                      {eraArtifacts.map((art) => (
                         <div
                           key={art.id}
                           onClick={() => onInspectArtifact(art)}
